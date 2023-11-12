@@ -18,8 +18,7 @@ public class UserAccountCreation {
         System.out.println("Enter your birthday (YYYY-MM-DD):");
         String birthday = scanner.nextLine();
 
-        // For simplicity, let's assume the 3rd party paying app is represented by an
-        // API key
+        // the 3rd party paying app is represented by an API key
         System.out.println("Enter your 3rd party paying app API key:");
         String thirdPartyAppApiKey = scanner.nextLine();
 
