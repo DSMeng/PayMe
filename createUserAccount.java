@@ -1,6 +1,7 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class UserAccountCreation {
+public class createUserAccount{
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -37,6 +38,7 @@ class User {
     private String name;
     private String birthday;
     private String thirdPartyAppApiKey;
+    private ArrayList<String> groupList = new ArrayList<>();
 
     public User(String username, String password, String name, String birthday, String thirdPartyAppApiKey) {
         this.username = username;
@@ -44,6 +46,18 @@ class User {
         this.name = name;
         this.birthday = birthday;
         this.thirdPartyAppApiKey = thirdPartyAppApiKey;
+    }
+
+    public void addGroup(String groupname){
+        groupList.add(groupname);
+    }
+
+    public void removeGroup(int index){
+        groupList.remove(index);
+    }
+
+    public String getGroup(int index){
+        return groupList.get(index);
     }
 
     @Override
@@ -56,4 +70,21 @@ class User {
                 ", thirdPartyAppApiKey='" + thirdPartyAppApiKey + '\'' +
                 '}';
     }
+
+    public static boolean isValidPassword(String password) {
+        return password.length() >= 8 && (password.contains("!") || password.contains("@") || password.contains("#") || password.contains("$") || password.contains("%"));
+    }
+
+    public static boolean isValidUsername(String username) {
+        return username.length() >= 8;
+    }
+
+    public static boolean isValidName(String name) {
+        return name.length() >= 2 && name.matches("[a-zA-Z]+");
+    }
+
+    public static boolean isValidThirdPartyKey(String thirdPartyKey) {
+        return !thirdPartyKey.isEmpty();
+    }
+
 }
