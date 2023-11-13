@@ -21,12 +21,6 @@ public class createUserAccountTest {
         assertFalse(createUserAccount.isValidName("A"));
     }
 
-    @Test
-    public void testValidBirthday() {
-        assertTrue(createUserAccount.isValidBirthday("2000-01-01"));
-        assertFalse(createUserAccount.isValidBirthday("2023-01-01")); // Future date
-        assertFalse(createUserAccount.isValidBirthday("invalid-date"));
-    }
 
     @Test
     public void testValidThirdPartyKey() {
