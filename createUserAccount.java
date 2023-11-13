@@ -1,4 +1,11 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class createUserAccount{
@@ -29,6 +36,14 @@ public class createUserAccount{
         // Display the created user's information
         System.out.println("User account created successfully. Details:");
         System.out.println(newUser);
+
+        System.out.println("Valid Username: " + newUser.isValidUsername(username));
+        System.out.println("Valid Birthday: " + newUser.isValidBirthday(birthday));
+        System.out.println("Valid Name: " + newUser.isValidName(name));
+        System.out.println("Valid Password: " + newUser.isValidPassword(password));
+        System.out.println("Valid API Key: " + newUser.isValidThirdPartyKey(thirdPartyAppApiKey));
+
+        scanner.close();
     }
 }
 
@@ -80,11 +95,51 @@ class User {
     }
 
     public static boolean isValidName(String name) {
-        return name.length() >= 2 && name.matches("[a-zA-Z]+");
+        return name.length() >= 2 && name.matches("[a-zA-Z ]+");
     }
 
     public static boolean isValidThirdPartyKey(String thirdPartyKey) {
         return !thirdPartyKey.isEmpty();
     }
 
+    public static boolean isValidBirthday(String birthday){
+        Locale locale = Locale.ENGLISH;
+        String format = "yyyy-MM-dd";
+        LocalDateTime ldt = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format, locale);
+        String[] date = birthday.split("-");
+        LocalDate birthDate = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[2]), Integer.parseInt(date[1]));
+        LocalDate now = LocalDate.now();
+        long years = ChronoUnit.YEARS.between(birthDate, now);
+        boolean formatting = false;
+
+        //Check Formatting of Date
+        try {
+            ldt = LocalDateTime.parse(birthday, formatter);
+            String result = ldt.format(formatter);
+            formatting = result.equals(birthday);
+        } catch (DateTimeParseException e) {
+            try {
+                LocalDate ld = LocalDate.parse(birthday, formatter);
+                String result = ld.format(formatter);
+                formatting = result.equals(birthday);
+            } catch (DateTimeParseException exp) {
+                try {
+                    LocalTime lt = LocalTime.parse(birthday, formatter);
+                    String result = lt.format(formatter);
+                    formatting = result.equals(birthday);
+                }catch(DateTimeParseException e2){
+                    //place holder
+                }
+            }
+        }
+
+        //Check Age
+        if(years >= 18 && formatting){
+            return true;
+        }
+
+        return false;
+
+    }
 }
